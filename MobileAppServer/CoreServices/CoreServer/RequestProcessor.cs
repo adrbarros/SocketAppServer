@@ -104,10 +104,21 @@ namespace SocketAppServer.CoreServices.CoreServer
                 }
 
                 logger.WriteLog($@"A syntax error was detected while converting the request body to a server object. 
-{msg}", ServerLogType.ERROR);
+{msg}
+
+-------------
+
+Raw received body: 
+
+{uriRequest}", ServerLogType.ERROR);
                 new SocketRequest().ProcessResponse(ActionResult.Json("", ResponseStatus.ERROR,
                     $@"A syntax error was detected while converting the request body to a server object. 
-{msg}"), this.clientSocket, null);
+{msg}
+-------------
+
+Raw received body: 
+
+{uriRequest}"), this.clientSocket, null);
             }
         }
         #endregion
@@ -271,9 +282,7 @@ namespace SocketAppServer.CoreServices.CoreServer
                 if (ActionLocker.ActionHasLock(controller, actionName))
                 {
                     if ((i + 1) >= actionLock.WaitingAttempts)
-                    {
                         throw new LockedActionException("The action does not allow simultaneous access and the maximum number of waiting attempts has been exceeded. Try to access the resource again later.");
-                    }
 
                     Thread.Sleep(actionLock.WaitingInterval);
                 }
@@ -297,7 +306,7 @@ namespace SocketAppServer.CoreServices.CoreServer
                 actionName = requestBody.Action;
 
                 request = new SocketRequest();
-                request.ClientSocket = clientSocket;
+                request.SetClientSocket(clientSocket);
                 request.Action = actionName;
                 request.Controller = controllerManager.InstantiateController(controllerName, requestBody);
 
