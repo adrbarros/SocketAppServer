@@ -23,6 +23,7 @@ SOFTWARE.
 */
 
 using Newtonsoft.Json;
+using SocketAppServer.CoreServices;
 using SocketAppServer.CoreServices.CLIHost;
 using SocketAppServer.CoreServices.ControllerManagement;
 using SocketAppServer.CoreServices.CoreServer;
@@ -46,7 +47,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace SocketAppServer.CoreServices
+namespace SocketAppServer
 {
     public abstract class AppServerConfigurator
     {
